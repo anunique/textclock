@@ -1,0 +1,65 @@
+ESHISTKFÜNF
+ZEHNVIERTEL
+BYZWANZIGCW
+VORNACHHALB
+NULLKOKSEIN
+ZWEIOSEDREI
+VIERHCKFÜNF
+SIEBENSECHS
+ACHTNEUNUND
+ZEHNZWANZIG
+ELFZWÖLFUHR
+
+caps:
+A 5 (done 0) 
+B 4 (done 0) 
+C 5 (done 0) 
+D 2 (done 0) 
+E 15 (done 0) 
+F 6 (done 0) 
+G 2 (done 0) 
+H 9 (done 0) 
+I 9 (done 0) 
+K 4 (done 0) 
+L 4 (done 0) 
+N 12 (done 0) 
+O 3 (done 0) 
+R 6 (done 0) 
+S 8 (done 0) 
+T 3 (done 0) 
+U 3 (done 0)
+V 3 (done 0)
+W 6 (done 0) 
+Y 1 (done 0) 
+Z 8 (done 0) 
+Ö 1 (done 0) 
+Ü 2 (done 0) 
+* 4 (done 0)
+elec_center 1 (done 0)
+elec 2 (done 0)
+
+
+P---------#
+L---------L
+P---------P
+L---------L
+P---------P
+L---------L
+P---------P
+L---------L
+P---------P
+L---------L
+P---------P
+L--xxxxx--#
+
+tiles:
+001 electronics (done 0)
+002 end (done 0)
+011 sidea (done 0)
+011 sideb (done 0)
+103 tile (done 0)
+
+
+
+
+
