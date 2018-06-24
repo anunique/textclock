@@ -1,9 +1,41 @@
+// =====================================================================================================
+// Title:    ws2812b led strip text clock
+// Author    -CW-
+// Function: LED Clock
+// Board:    Arduino mini
+// Version:  0.5
+// Date:     2018-06-24
+// =====================================================================================================
+//   Parts:  1x LDR ( https://www.banggood.com/10-PCS-5MM-GL5516-Light-Dependent-Resistor-Photoresistor-LDR-p-922621.html?p=G615104658801201605J )
+//           2x Button ( https://www.banggood.com/10pcs-Momentary-Button-Switches-ONOFF-Push-Button-Mini-Switches-250V-0_5A-p-1046059.html?p=G615104658801201605J )
+//           2x Capacitor ( https://www.banggood.com/100pcs-0_1uF-104-50V-100nF-104M-Multilayer-Ceramic-Capacitor-p-1094956.html?p=G615104658801201605J )
+//           1x DS3231 real time clock ( https://www.banggood.com/DS3231-AT24C32-IIC-High-Precision-Real-Time-Clock-Module-For-Arduino-p-81066.html?p=G615104658801201605J )
+//           1x Arduino Mini ( https://www.banggood.com/Wholesale-New-Ver-Pro-Mini-ATMEGA328-328p-5V-16MHz-Arduino-Compatible-Nano-Size-p-68534.html?p=G615104658801201605J )
+//           1x WS2812b LED strip ( https://www.banggood.com/5M-45W-150SMD-WS2812B-LED-RGB-Colorful-Strip-Light-Waterproof-IP65-WhiteBlack-PCB-DC5V-p-1035640.html?p=G615104658801201605J )
+//           1x DC socket ( https://www.banggood.com/5_5mm-X-2_1mm-DC-Power-Supply-Metal-Jack-Socket-With-Nut-And-Washer-p-934446.html?p=G615104658801201605J )
+//           1x Powersupply ( https://www.banggood.com/Multi-Voltage-Power-Adapter-2500mA-3v-4_5v-5v-6v-9v-12v-DC-1A-Power-Supply-p-1151452.html?p=G615104658801201605J )
+//           ---------------------------------------------------------------------------
+//   Power:  5V is derived from either a 2A USB or 5V regulated power adaptor !!!
+// =====================================================================================================
+// Revision History:
+// -----------------
+// V0.0:     Test sequence.
+//           ---------------------------------------------------------------------------
+// V0.1:     basic text layout (some parts are copypasta from another led clock, like the button or timesetting functions)
+//           ---------------------------------------------------------------------------
+// V0.2:     first effects
+//           ---------------------------------------------------------------------------
+// V0.4:     switched to fastled
+//           ---------------------------------------------------------------------------
+// V0.4:     intro code and minor bugfixes
+// ===================================================================================================== 
+
 #include <Wire.h>
 #include "RTClib.h"
 #include <FastLED.h>
 #include "math.h"
 
-#define  NUM_LEDS               11*11+6       // total number of Neo-Pixels
+#define  NUM_LEDS             11*11+6       // total number of Neo-Pixels
 #define  LED_STRIP            4             // led strip output       - pin 4
 #define  BUT_UP               7             // mode up   button       - pin 7
 #define  BUT_DN               8             // mode down button       - pin 8
@@ -119,6 +151,7 @@ void setup() {
   showLeds();
   delay(1000);
 
+  //credit sequence
   clearLeds(0);
   setPixel(0,8,CRGB(120,120,255));
   setPixel(1,8,CRGB(120,120,255));
@@ -146,7 +179,8 @@ void setup() {
       delay(100);
     }    
   }
-  
+
+  //welcome sequence
   clearLeds(0);
   for (int i=3; i<8;i++)
   {
@@ -203,11 +237,11 @@ void loop() {
   {
     ctr=0;
     secondOld=255;
-    ReadTimeDate();                              // read date and time
+    ReadTimeDate();
   }
   ctr++;
   buttonState = getButtons();
-  if (buttonState == 1)                                                                   // mode up   detected
+  if (buttonState == 1) // mode up detected
   { 
     mode++; 
     if (mode > MODE_LIMIT)    
@@ -215,7 +249,8 @@ void loop() {
       mode = 0; 
     }
   }
-  if (buttonState == 2)                                                                   // mode down detected
+  
+  if (buttonState == 2) // mode down detected
   { 
     mode--; 
     if (mode == 255)    
@@ -223,19 +258,21 @@ void loop() {
       mode = MODE_LIMIT; 
     }
   }  
-  if (mode != modeOld)                                                                   // mode changed do some resets
+  
+  if (mode != modeOld) // mode changed do some resets
   { 
     secondOld = 255; 
     modeOld = mode;       
   }
-  if (buttonState == 3)                                                                   // both mode buttons pressed
+  
+  if (buttonState == 3) // both mode buttons pressed
   { 
     setTime();
   }
-  if (second != secondOld)                          // 1Hz interrupt occured or first show after mode changed to Time mode
+  if (second != secondOld) // 1Hz interrupt occured or first show after mode changed to Time mode
   {
     clearLeds(0);
-    secondOld = second;                          // reset interrupt flag 
+    secondOld = second; // reset interrupt flag 
     if (mode == 0)
     {
       showMatrix();
@@ -276,7 +313,6 @@ void loop() {
     }
     showLeds();
   }
-  //TODO: cookie();                                                    
   //TODO: pacman();
 }
 // =====================================================================================================
@@ -1117,10 +1153,20 @@ void displayTime(byte hour, byte minute, byte second, byte focus, CRGB colorhour
     {
       PixelAdd(hours[10]+i, colorhour, algo);
     }
-    for (int i=0; i<hours_len[thishour%10];i++)
-    {
-      PixelAdd(hours[thishour%10]+i, colorhour, algo);
-    }
+    if (thishour == 17)                                     //german fix for "sieben" and "sieb" "zehn"
+    {                                                       //
+      for (int i=0; i<4;i++)                                //
+      {                                                     //
+        PixelAdd(6+3*11+7+i, colorhour, algo);              //
+      }                                                     //
+    }                                                       //
+    else                                                    //
+    {                                                       //
+      for (int i=0; i<hours_len[thishour%10];i++)           //
+      {                                                     //
+        PixelAdd(hours[thishour%10]+i, colorhour, algo);    //
+      }                                                     //
+    }                                                       //
   }
 
   for (int i=0;i<it_len;i++)
@@ -1412,3 +1458,4 @@ CRGB Wheel(byte WheelPos) {
    return CRGB(WheelPos * 3, 255 - WheelPos * 3, 0);
   }
 }
+
