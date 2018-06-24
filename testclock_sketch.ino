@@ -96,6 +96,7 @@ void setup() {
   {
     matrix[i]=14;
   }
+  //test sequence
   clearLeds(CRGB(120, 0, 0));
   showLeds();
   delay(1000);
@@ -117,6 +118,81 @@ void setup() {
   clearLeds(CRGB(120, 120, 120));
   showLeds();
   delay(1000);
+
+  clearLeds(0);
+  setPixel(0,8,CRGB(120,120,255));
+  setPixel(1,8,CRGB(120,120,255));
+  setPixel(9,8,CRGB(120,120,255));
+  setPixel(10,8,CRGB(120,120,255));
+  for (int i=0; i < 10; i++)
+  {
+    byte coords[] = {
+      6+5*11+5,
+      6+4*11+5,
+      6+4*11+4,
+      6+5*11+6,
+      6+6*11+4,
+      6+6*11+5,
+      6+6*11+6,
+      6+5*11+4,
+      6+4*11+6,
+      6+3*11+4,
+      6+3*11+3
+    };
+    for (int ii = 0; ii < sizeof(coords); ii++)
+    {
+      PixelAdd(coords[ii], Wheel(i*25), 0);
+      showLeds();
+      delay(100);
+    }    
+  }
+  
+  clearLeds(0);
+  for (int i=3; i<8;i++)
+  {
+    setPixel(i,10,CRGB(120,120,0));
+    setPixel(i,0,CRGB(120,120,0));
+  }
+  for (int i=2; i<9;i++)
+  {
+    setPixel(i,9,CRGB(120,120,0));
+    setPixel(i,1,CRGB(120,120,0));
+  }
+  for (int i=1; i<10;i++)
+  {
+    setPixel(i,8,CRGB(120,120,0));
+    setPixel(i,2,CRGB(120,120,0));
+  }
+  for (int i=0; i<11;i++)
+  {
+    setPixel(i,7,CRGB(120,120,0));
+    setPixel(i,6,CRGB(120,120,0));
+    setPixel(i,5,CRGB(120,120,0));
+    setPixel(i,4,CRGB(120,120,0));
+    setPixel(i,3,CRGB(120,120,0));
+  }
+  for (int i=4; i<7;i++)
+  {
+    setPixel(i,1,CRGB(0,0,120));
+    setPixel(i,4,CRGB(120,0,0));
+  }
+  setPixel(3,2,CRGB(0,0,120));
+  setPixel(7,2,CRGB(0,0,120));
+  setPixel(2,3,CRGB(0,0,120));
+  setPixel(8,3,CRGB(0,0,120));
+
+  setPixel(5,5,CRGB(120,0,0));
+
+  setPixel(2,7,CRGB(0,0,0));
+  setPixel(3,7,CRGB(0,0,0));
+  setPixel(2,8,CRGB(0,0,0));
+
+  setPixel(7,7,CRGB(0,0,0));
+  setPixel(8,7,CRGB(0,0,0));
+  setPixel(8,8,CRGB(0,0,0));
+
+  showLeds();
+  delay(5000);
 }
 // =====================================================================================================
 // loop()
@@ -163,16 +239,16 @@ void loop() {
     if (mode == 0)
     {
       showMatrix();
-      displayTime(hour, minute, second, 0);
+      displayTime(hour, minute, second, 0, CRGB(0, 0, 120), CRGB(120, 0, 120), 2);
     }
     if (mode == 1)
     {
-      displayTime(hour, minute, second, 0);
+      displayTime(hour, minute, second, 0, CRGB(0, 0, 120), CRGB(120, 0, 120), 0);
     }
     if (mode == 2)
     {
-      displaySeconds(hour, minute, second, 0);
-      displayTime(hour, minute, second, 0);
+      displaySeconds(hour, minute, second, 0, CRGB(120, 0, 0), 0);
+      displayTime(hour, minute, second, 0, CRGB(0, 0, 120), CRGB(120, 0, 120), 2);
     }
     if (mode == 3)
     {
@@ -181,22 +257,22 @@ void loop() {
     if (mode == 4)
     {
       showPLASMA();
-      displayTime(hour, minute, second, 0);
+      displayTime(hour, minute, second, 0, CRGB(200, 200, 200), CRGB(200, 200, 200), 0);
     }
     if (mode == 5)
     {
       showRainbow();
-      displayTime(hour, minute, second, 0);
+      displayTime(hour, minute, second, 0, CRGB(0, 0, 120), CRGB(120, 0, 120), 1);
     }
     if (mode == 6)
     {
       showNoise();
-      displayTime(hour, minute, second, 0);
+      displayTime(hour, minute, second, 0, CRGB(0, 0, 120), CRGB(120, 0, 120), 1);
     }
     if (mode == 7)
     {
       showSinusoids();
-      displayTime(hour, minute, second, 0);
+      displayTime(hour, minute, second, 0, CRGB(200, 200, 200), CRGB(200, 200, 200), 0);
     }
     showLeds();
   }
@@ -391,7 +467,7 @@ void setTime()
   { 
     newHour = buttonIncDec(newHour, 0, 23);                           // inc/dec the new hour value making sure it stays within 0 - 23 boundary
     clearLeds(0);
-    displayTime(newHour, newMinute, newSecond, 1);                 // display new time with hours brighter than minutes & seconds
+    displayTime(newHour, newMinute, newSecond, 1, CRGB(0, 0, 120), CRGB(120, 0, 120), 0);                 // display new time with hours brighter than minutes & seconds
     showLeds();
   }
   // set minute
@@ -401,7 +477,7 @@ void setTime()
   { 
     newMinute = buttonIncDec(newMinute, 0, 59);                      // inc/dec the new minute value making sure it stays within 0 - 59 boundary
     clearLeds(0);
-    displayTime(newHour, newMinute, newSecond, 2);                // display new time with minutes brighter than hours & seconds
+    displayTime(newHour, newMinute, newSecond, 2, CRGB(0, 0, 120), CRGB(120, 0, 120), 0);                // display new time with minutes brighter than hours & seconds
     showLeds();
   }
   // set second
@@ -411,7 +487,7 @@ void setTime()
   { 
     newSecond = buttonIncDec(newSecond, 0, 59);                      // inc/dec the new second value making sure it stays within 0 - 59 boundary
     clearLeds(0);
-    displaySeconds(newHour, newMinute, newSecond, 3);                // display new time with seconds brighter than hours & minutes
+    displaySeconds(newHour, newMinute, newSecond, 3, CRGB(120, 0, 0), 0);                // display new time with seconds brighter than hours & minutes
     showLeds();
   }  
   buttonState = 0; 
@@ -423,9 +499,8 @@ void setTime()
 // DISPLAY THE SECONDS
 //   - accepts focus, which applies a highlight to either hours, minutes, seconds 
 // ===================================================================================================== 
-void displaySeconds(byte hour, byte minute, byte second, byte focus)
+void displaySeconds(byte hour, byte minute, byte second, byte focus, CRGB color, byte algo)
 {
-  CRGB secondBright = CRGB(120, 0, 0);
   if (second / 10 == 0)
   {
     byte coords[] = {
@@ -455,7 +530,7 @@ void displaySeconds(byte hour, byte minute, byte second, byte focus)
     };
     for (int i = 0; i < sizeof(coords); i++)
     {
-      PixelAdd(coords[i], secondBright);
+      PixelAdd(coords[i], color, algo);
     }    
   }
   else if (second / 10 == 1)
@@ -479,7 +554,7 @@ void displaySeconds(byte hour, byte minute, byte second, byte focus)
     };    
     for (int i = 0; i < sizeof(coords); i++)
     {
-      PixelAdd(coords[i], secondBright);
+      PixelAdd(coords[i], color, algo);
     }    
   }
   else if (second / 10 == 2)
@@ -504,7 +579,7 @@ void displaySeconds(byte hour, byte minute, byte second, byte focus)
     };    
     for (int i = 0; i < sizeof(coords); i++)
     {
-      PixelAdd(coords[i], secondBright);
+      PixelAdd(coords[i], color, algo);
     }    
   }
   else if (second / 10 == 3)
@@ -529,7 +604,7 @@ void displaySeconds(byte hour, byte minute, byte second, byte focus)
     };    
     for (int i = 0; i < sizeof(coords); i++)
     {
-      PixelAdd(coords[i], secondBright);
+      PixelAdd(coords[i], color, algo);
     }    
   }
   else if (second / 10 == 4)
@@ -554,7 +629,7 @@ void displaySeconds(byte hour, byte minute, byte second, byte focus)
     };    
     for (int i = 0; i < sizeof(coords); i++)
     {
-      PixelAdd(coords[i], secondBright);
+      PixelAdd(coords[i], color, algo);
     }    
   }
   else if (second / 10 == 5)
@@ -582,7 +657,7 @@ void displaySeconds(byte hour, byte minute, byte second, byte focus)
     };    
     for (int i = 0; i < sizeof(coords); i++)
     {
-      PixelAdd(coords[i], secondBright);
+      PixelAdd(coords[i], color, algo);
     }    
   }
   if (second % 10 == 0)
@@ -614,7 +689,7 @@ void displaySeconds(byte hour, byte minute, byte second, byte focus)
     };    
     for (int i = 0; i < sizeof(coords); i++)
     {
-      PixelAdd(coords[i], secondBright);
+      PixelAdd(coords[i], color, algo);
     }    
   }
   else if (second % 10 == 1)
@@ -639,7 +714,7 @@ void displaySeconds(byte hour, byte minute, byte second, byte focus)
     };    
     for (int i = 0; i < sizeof(coords); i++)
     {
-      PixelAdd(coords[i], secondBright);
+      PixelAdd(coords[i], color, algo);
     }    
   }
   else if (second % 10 == 2)
@@ -664,7 +739,7 @@ void displaySeconds(byte hour, byte minute, byte second, byte focus)
     };    
     for (int i = 0; i < sizeof(coords); i++)
     {
-      PixelAdd(coords[i], secondBright);
+      PixelAdd(coords[i], color, algo);
     }    
   }
   else if (second % 10 == 3)
@@ -689,7 +764,7 @@ void displaySeconds(byte hour, byte minute, byte second, byte focus)
     };    
     for (int i = 0; i < sizeof(coords); i++)
     {
-      PixelAdd(coords[i], secondBright);
+      PixelAdd(coords[i], color, algo);
     }    
   }
   else if (second % 10 == 4)
@@ -715,7 +790,7 @@ void displaySeconds(byte hour, byte minute, byte second, byte focus)
     };    
     for (int i = 0; i < sizeof(coords); i++)
     {
-      PixelAdd(coords[i], secondBright);
+      PixelAdd(coords[i], color, algo);
     }    
   }
   else if (second % 10 == 5)
@@ -743,7 +818,7 @@ void displaySeconds(byte hour, byte minute, byte second, byte focus)
     };    
     for (int i = 0; i < sizeof(coords); i++)
     {
-      PixelAdd(coords[i], secondBright);
+      PixelAdd(coords[i], color, algo);
     }    
   }
   else if (second % 10 == 6)
@@ -772,7 +847,7 @@ void displaySeconds(byte hour, byte minute, byte second, byte focus)
     };    
     for (int i = 0; i < sizeof(coords); i++)
     {
-      PixelAdd(coords[i], secondBright);
+      PixelAdd(coords[i], color, algo);
     }    
   }
   else if (second % 10 == 7)
@@ -794,7 +869,7 @@ void displaySeconds(byte hour, byte minute, byte second, byte focus)
     };    
     for (int i = 0; i < sizeof(coords); i++)
     {
-      PixelAdd(coords[i], secondBright);
+      PixelAdd(coords[i], color, algo);
     }    
   }
   else if (second % 10 == 8)
@@ -824,7 +899,7 @@ void displaySeconds(byte hour, byte minute, byte second, byte focus)
     };    
     for (int i = 0; i < sizeof(coords); i++)
     {
-      PixelAdd(coords[i], secondBright);
+      PixelAdd(coords[i], color, algo);
     }    
   }
   else if (second % 10 == 9)
@@ -850,7 +925,7 @@ void displaySeconds(byte hour, byte minute, byte second, byte focus)
     };    
     for (int i = 0; i < sizeof(coords); i++)
     {
-      PixelAdd(coords[i], secondBright);
+      PixelAdd(coords[i], color, algo);
     }    
   }
 }
@@ -858,28 +933,21 @@ void displaySeconds(byte hour, byte minute, byte second, byte focus)
 // DISPLAY THE TIME
 //   - accepts focus, which applies a highlight to either hours, minutes, seconds 
 // ===================================================================================================== 
-void displayTime(byte hour, byte minute, byte second, byte focus) 
+void displayTime(byte hour, byte minute, byte second, byte focus, CRGB colorhour, CRGB colorminute, int algo) 
 {
-  CRGB hourBright = CRGB(000, 000, 040);                       // set hours   colour faint yellow
-  CRGB minuteBright = CRGB(000, 000, 040);                     // set minutes colour faint orange
-
   switch (focus)                                                      // depending on FOCUS value
   {
     case 1:
-      hourBright = CRGB(0, 0, 240);                        // set hours   colour bright yellow
+      colorminute = CRGB(0, 0, 40);                        
       break;
     case 2:
-      minuteBright = CRGB(0, 0, 240);                      // set minutes colour bright orange
-      break;
-    case 0:
-      hourBright = CRGB(0, 0, 240);                        // set hours   colour bright yellow
-      minuteBright = CRGB(0, 0, 240);                      // set minutes colour bright orange
+      colorhour = CRGB(0, 0, 40);                          
       break;
   }
   byte thishour = hour;
   if ((minute % 5) > 0)
   {
-    PixelAdd(dots[minute % 5 - 1], minuteBright);  
+    PixelAdd(dots[minute % 5 - 1], colorminute, algo);  
   }
   if (minute > 24)
   {
@@ -895,125 +963,125 @@ void displayTime(byte hour, byte minute, byte second, byte focus)
   {
     for (int i=0; i<five_len;i++)
     {
-       PixelAdd(five+i, minuteBright);
+       PixelAdd(five+i, colorminute, algo);
     }    
     for (int i=0; i<past_len;i++)
     {
-       PixelAdd(past+i, minuteBright);
+       PixelAdd(past+i, colorminute, algo);
     }    
   }
   else if (minute <15)
   {
     for (int i=0; i<ten_len;i++)
     {
-       PixelAdd(ten+i, minuteBright);
+       PixelAdd(ten+i, colorminute, algo);
     }    
     for (int i=0; i<past_len;i++)
     {
-       PixelAdd(past+i, minuteBright);
+       PixelAdd(past+i, colorminute, algo);
     }    
   }
   else if (minute <20)
   {
     for (int i=0; i<quarter_len;i++)
     {
-       PixelAdd(quarter+i, minuteBright);
+       PixelAdd(quarter+i, colorminute, algo);
     }    
     for (int i=0; i<past_len;i++)
     {
-       PixelAdd(past+i, minuteBright);
+       PixelAdd(past+i, colorminute, algo);
     }    
   }
   else if (minute <25)
   {
     for (int i=0; i<twenty_len;i++)
     {
-       PixelAdd(twenty+i, minuteBright);
+       PixelAdd(twenty+i, colorminute, algo);
     }    
     for (int i=0; i<past_len;i++)
     {
-       PixelAdd(past+i, minuteBright);
+       PixelAdd(past+i, colorminute, algo);
     }    
   }
   else if (minute <30)
   {
     for (int i=0; i<five_len;i++)
     {
-       PixelAdd(five+i, minuteBright);
+       PixelAdd(five+i, colorminute, algo);
     }    
     for (int i=0; i<to_len;i++)
     {
-       PixelAdd(to+i, minuteBright);
+       PixelAdd(to+i, colorminute, algo);
     }    
     for (int i=0; i<half_len;i++)
     {
-       PixelAdd(half+i, minuteBright);
+       PixelAdd(half+i, colorminute, algo);
     }    
   }
   else if (minute <35)
   {
     for (int i=0; i<half_len;i++)
     {
-       PixelAdd(half+i, minuteBright);
+       PixelAdd(half+i, colorminute, algo);
     }    
   }
   else if (minute <40)
   {
     for (int i=0; i<five_len;i++)
     {
-       PixelAdd(five+i, minuteBright);
+       PixelAdd(five+i, colorminute, algo);
     }    
     for (int i=0; i<past_len;i++)
     {
-       PixelAdd(past+i, minuteBright);
+       PixelAdd(past+i, colorminute, algo);
     }    
     for (int i=0; i<half_len;i++)
     {
-       PixelAdd(half+i, minuteBright);
+       PixelAdd(half+i, colorminute, algo);
     }      
   }
   else if (minute <45)
   {
     for (int i=0; i<twenty_len;i++)
     {
-       PixelAdd(twenty+i, minuteBright);
+       PixelAdd(twenty+i, colorminute, algo);
     }    
     for (int i=0; i<to_len;i++)
     {
-       PixelAdd(to+i, minuteBright);
+       PixelAdd(to+i, colorminute, algo);
     }        
   }
   else if (minute <50)
   {
     for (int i=0; i<quarter_len;i++)
     {
-       PixelAdd(quarter+i, minuteBright);
+       PixelAdd(quarter+i, colorminute, algo);
     }    
     for (int i=0; i<to_len;i++)
     {
-       PixelAdd(to+i, minuteBright);
+       PixelAdd(to+i, colorminute, algo);
     }        
   }
   else if (minute <55)
   {
     for (int i=0; i<ten_len;i++)
     {
-       PixelAdd(ten+i, minuteBright);
+       PixelAdd(ten+i, colorminute, algo);
     }    
     for (int i=0; i<to_len;i++)
     {
-       PixelAdd(to+i, minuteBright);
+       PixelAdd(to+i, colorminute, algo);
     }        
   }
   else 
   {
     for (int i=0; i<five_len;i++)
     {
-       PixelAdd(five+i, minuteBright);
+       PixelAdd(five+i, colorminute, algo);
     }    
     for (int i=0; i<to_len;i++)
     {
-       PixelAdd(to+i, minuteBright);
+       PixelAdd(to+i, colorminute, algo);
     }        
   }
 
@@ -1022,24 +1090,24 @@ void displayTime(byte hour, byte minute, byte second, byte focus)
   {
     for (int i=0; i<hours_len[thishour];i++)
     {
-       PixelAdd(hours[thishour]+i, hourBright);
+       PixelAdd(hours[thishour]+i, colorhour, algo);
     }
   }
   else if (thishour > 19)
   {
     for (int i=0; i<twentyh_len;i++)
     {
-      PixelAdd(twentyh+i, hourBright);
+      PixelAdd(twentyh+i, colorhour, algo);
     }
     if (thishour > 20)
     {
       for (int i=0; i<und_len;i++)
       {
-        PixelAdd(und+i, hourBright);
+        PixelAdd(und+i, colorhour, algo);
       }
       for (int i=0; i<hours_len[thishour%10];i++)
       {
-        PixelAdd(hours[thishour%10]+i, hourBright);
+        PixelAdd(hours[thishour%10]+i, colorhour, algo);
       }
     }
   }
@@ -1047,27 +1115,27 @@ void displayTime(byte hour, byte minute, byte second, byte focus)
   {
     for (int i=0; i<hours_len[10];i++)
     {
-      PixelAdd(hours[10]+i, hourBright);
+      PixelAdd(hours[10]+i, colorhour, algo);
     }
     for (int i=0; i<hours_len[thishour%10];i++)
     {
-      PixelAdd(hours[thishour%10]+i, hourBright);
+      PixelAdd(hours[thishour%10]+i, colorhour, algo);
     }
   }
 
   for (int i=0;i<it_len;i++)
   {
-    PixelAdd(it+i, hourBright);
+    PixelAdd(it+i, colorhour, algo);
   }
 
   for (int i=0;i<is_len;i++)
   {
-    PixelAdd(is+i, hourBright);
+    PixelAdd(is+i, colorhour, algo);
   }
  
   for (int i=0;i<oclock_len;i++)
   {
-    PixelAdd(oclock+i, hourBright);
+    PixelAdd(oclock+i, colorhour, algo);
   }
 }
 
@@ -1259,10 +1327,20 @@ void clearLeds(CRGB color)
 // =====================================================================================================
 // calculate Pixel Values
 // =====================================================================================================
-void PixelAdd(byte index, CRGB color)
+void PixelAdd(byte index, CRGB color, byte algo)
 {
-  //TODO maybe better algo
-  leds[index] |= color;
+  if (algo == 1)
+  {
+    leds[index] = ~leds[index]; //not current color
+  }
+  else if (algo == 2)
+  {
+    leds[index] |= color; //or color
+  }
+  else
+  {
+    leds[index] = color; //set color
+  }
 }
 // =====================================================================================================
 // GEt Pixel Index
